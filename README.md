@@ -1,86 +1,99 @@
-# AuthMongo — Full-Stack Authentication System
+<div align="center">
 
-> Production-ready authentication system built with **NestJS** (backend) and **Next.js 15** (frontend), backed by **MongoDB** via Prisma ORM. Uses **npm workspaces** for a single shared `node_modules`.
+# 🔐 NestAuth
 
----
+**Production-ready full-stack authentication — NestJS · Next.js 15 · MongoDB**
 
-## Tech Stack
+[![NestJS](https://img.shields.io/badge/NestJS-E0234E?style=flat-square&logo=nestjs&logoColor=white)](https://nestjs.com)
+[![Next.js](https://img.shields.io/badge/Next.js_15-000000?style=flat-square&logo=nextdotjs&logoColor=white)](https://nextjs.org)
+[![MongoDB](https://img.shields.io/badge/MongoDB-47A248?style=flat-square&logo=mongodb&logoColor=white)](https://mongodb.com)
+[![TypeScript](https://img.shields.io/badge/TypeScript-3178C6?style=flat-square&logo=typescript&logoColor=white)](https://typescriptlang.org)
+[![Prisma](https://img.shields.io/badge/Prisma-2D3748?style=flat-square&logo=prisma&logoColor=white)](https://prisma.io)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow?style=flat-square)](LICENSE)
 
-| Layer      | Technology                                                        |
-| ---------- | ----------------------------------------------------------------- |
-| Backend    | NestJS 10, Prisma 5, Passport.js, JWT, bcrypt, Nodemailer        |
-| Frontend   | Next.js 15 (App Router + Turbopack), React 19, Zustand, Tailwind CSS 4 |
-| Database   | MongoDB (Atlas or local)                                          |
-| Language   | TypeScript 5                                                      |
-| Monorepo   | npm workspaces                                                    |
-
-## Features
-
-- **JWT Authentication** — Access token (15 min) + Refresh token (7 days) rotation
-- **Role-Based Access Control** — `USER`, `ADMIN`, `MODERATOR` roles with route guards
-- **Email Verification** — Nodemailer with Gmail App Passwords (or any SMTP)
-- **Security Hardened** — Helmet, CORS, rate-limiting, bcrypt password hashing, constant-time comparison
-- **Explicit Password Hashing** — bcrypt hashing in the auth service on register
-- **Token Refresh** — Silent token rotation with reuse detection
-- **Responsive UI** — Tailwind CSS with form validation (react-hook-form + Zod)
-- **npm Workspaces** — Single `node_modules` at root, shared across backend & frontend
+</div>
 
 ---
 
-## Project Structure
+## What is NestAuth?
+
+NestAuth is a plug-and-play authentication starter built with **NestJS** (backend) and **Next.js 15 App Router** (frontend), backed by **MongoDB** via Prisma ORM. It uses **npm workspaces** so both apps share a single `node_modules` at the root.
+
+> Clone it. Configure it. Ship it.
+
+---
+
+## ✨ Features
+
+| Feature | Details |
+|---|---|
+| 🔑 JWT Auth | Access token (15 min) + Refresh token (7 days) |
+| 🔁 Token Rotation | Silent refresh with reuse detection |
+| 👥 RBAC | `USER`, `MODERATOR`, `ADMIN` roles with route guards |
+| 📧 Email Verification | Nodemailer with Gmail App Passwords or any SMTP |
+| 🔐 Password Hashing | bcrypt with constant-time comparison |
+| 🛡️ Security | Helmet, CORS, rate limiting, input whitelisting |
+| 🎨 Responsive UI | Tailwind CSS 4 + React Hook Form + Zod validation |
+| 📦 Monorepo | npm workspaces — one `node_modules` for both apps |
+
+---
+
+## 🛠️ Tech Stack
+
+| Layer | Technology |
+|---|---|
+| Backend | NestJS 10, Prisma 5, Passport.js, JWT, bcrypt, Nodemailer |
+| Frontend | Next.js 15 (App Router + Turbopack), React 19, Zustand, Tailwind CSS 4 |
+| Database | MongoDB (Atlas or local) |
+| Language | TypeScript 5 |
+| Monorepo | npm workspaces |
+
+---
+
+## 📁 Project Structure
 
 ```
-authmongo/
-├── package.json               # Root workspace config
-├── node_modules/              # Single shared node_modules
-├── backend/                   # NestJS API server
-│   ├── prisma/
-│   │   └── schema.prisma      # Database schema
-│   ├── src/
-│   │   ├── auth/              # Authentication module
-│   │   │   ├── decorators/    # @CurrentUser, @Roles
-│   │   │   ├── dto/           # Request validation DTOs
-│   │   │   ├── guards/        # JWT & role guards
-│   │   │   └── strategies/    # Passport JWT strategies
-│   │   ├── common/            # Shared filters & middleware
-│   │   ├── config/            # Typed app configuration (registerAs)
-│   │   ├── mail/              # Nodemailer email service
-│   │   ├── prisma/            # Prisma client module
-│   │   └── users/             # User CRUD module
-│   └── .env.example
+nestauth/
+├── package.json                  # Root workspace config
+├── node_modules/                 # Shared across both apps
 │
-├── frontend/                  # Next.js 15 App Router
-│   ├── src/
-│   │   ├── app/               # Route pages (App Router)
-│   │   ├── components/        # Reusable UI + layout + auth guards
-│   │   ├── hooks/             # Custom React hooks (useAuth, useCurrentUser)
-│   │   ├── lib/               # Axios instance, API client, cn() utility
-│   │   ├── store/             # Zustand auth store (persisted)
-│   │   └── types/             # TypeScript interfaces
-│   └── .env.example
+├── backend/                      # NestJS API (port 4000)
+│   ├── prisma/schema.prisma      # MongoDB User model + Role enum
+│   └── src/
+│       ├── auth/                 # Register, Login, Refresh, Logout, Verify
+│       ├── users/                # Protected user routes
+│       ├── mail/                 # Email verification service
+│       ├── prisma/               # Prisma client module
+│       ├── config/               # Typed app configuration
+│       └── common/               # Exception filter, logger middleware
 │
-├── .editorconfig
-├── .gitignore
-├── LICENSE
-└── README.md
+└── frontend/                     # Next.js 15 App Router (port 3000)
+    └── src/
+        ├── app/                  # Route pages
+        ├── components/           # UI, layout, auth guards
+        ├── hooks/                # useAuth, useCurrentUser
+        ├── lib/                  # Axios instance, API client
+        ├── store/                # Zustand auth store (persisted)
+        └── types/                # TypeScript interfaces
 ```
 
 ---
 
-## Getting Started
+## 🚀 Getting Started
 
-### Prerequisites
+### Requirements
+- Node.js ≥ 18
+- npm ≥ 9
+- MongoDB — Atlas cluster or local instance
 
-- **Node.js** ≥ 18
-- **npm** ≥ 9
-- **MongoDB** — Atlas cluster or local instance
+---
 
 ### 1. Clone & Install
 
 ```bash
 git clone <repo-url> authmongo
 cd authmongo
-npm install          # installs all deps for both backend & frontend
+npm install        # installs deps for both backend & frontend
 ```
 
 ### 2. Configure Environment
@@ -88,11 +101,9 @@ npm install          # installs all deps for both backend & frontend
 ```bash
 # Backend
 cp backend/.env.example backend/.env
-# → Fill in DATABASE_URL, JWT secrets, SMTP credentials
 
 # Frontend
 cp frontend/.env.example frontend/.env.local
-# → Adjust API URL if needed (default: http://localhost:4000/api/v1)
 ```
 
 ### 3. Push Database Schema
@@ -102,85 +113,135 @@ npm run prisma:generate
 npm run prisma:push
 ```
 
-### 4. Run Development Servers
+### 4. Start Dev Servers
 
 ```bash
-# Terminal 1 — Backend (http://localhost:4000)
-npm run dev:backend
+# Terminal 1 — Backend
+npm run dev:backend       # → http://localhost:4000
 
-# Terminal 2 — Frontend (http://localhost:3000)
-npm run dev:frontend
-```
-
-Or from inside each directory:
-
-```bash
-# Backend
-cd backend && npm run start:dev
-
-# Frontend
-cd frontend && npm run dev
+# Terminal 2 — Frontend
+npm run dev:frontend      # → http://localhost:3000
 ```
 
 ---
 
-## Available Scripts (from root)
+## 🔧 Environment Variables
 
-| Script               | Description                                     |
-| -------------------- | ----------------------------------------------- |
-| `npm install`        | Install all deps for both workspaces             |
-| `npm run dev:backend`| Start backend in watch mode (port 4000)          |
-| `npm run dev:frontend`| Start frontend dev server with Turbopack (port 3000) |
-| `npm run build:backend`| Build backend                                  |
-| `npm run build:frontend`| Build frontend                                |
-| `npm run start:backend`| Start backend in production mode               |
-| `npm run start:frontend`| Start frontend in production mode              |
-| `npm run prisma:generate`| Generate Prisma client                        |
-| `npm run prisma:push`| Push Prisma schema to MongoDB                    |
+### `backend/.env`
 
----
+```env
+DATABASE_URL="mongodb+srv://<user>:<pass>@cluster.mongodb.net/nestauth"
 
-## API Endpoints
+JWT_ACCESS_SECRET="min-32-char-secret"
+JWT_REFRESH_SECRET="min-32-char-secret"
 
-| Method | Endpoint                          | Auth     | Description                |
-| ------ | --------------------------------- | -------- | -------------------------- |
-| POST   | `/api/v1/auth/register`           | Public   | Register new user          |
-| POST   | `/api/v1/auth/login`              | Public   | Login & receive tokens     |
-| POST   | `/api/v1/auth/refresh`            | Refresh  | Rotate token pair          |
-| POST   | `/api/v1/auth/logout`             | JWT      | Invalidate refresh token   |
-| GET    | `/api/v1/auth/verify-email`       | Public   | Verify email with token    |
-| POST   | `/api/v1/auth/resend-verification`| Public   | Resend verification email  |
-| GET    | `/api/v1/users/me`                | JWT      | Get current user profile   |
-| GET    | `/api/v1/users`                   | Admin    | List all users             |
-| GET    | `/api/v1/users/dashboard`         | Mod+     | Moderator dashboard        |
+MAIL_HOST="smtp.gmail.com"
+MAIL_PORT=587
+MAIL_USER="you@gmail.com"
+MAIL_PASS="your-gmail-app-password"
+MAIL_FROM="you@gmail.com"
+
+CLIENT_URL="http://localhost:3000"
+PORT=4000
+```
+
+### `frontend/.env.local`
+
+```env
+NEXT_PUBLIC_API_URL=http://localhost:4000/api/v1
+```
 
 ---
 
-## Environment Variables
+## 📡 API Endpoints
 
-### Backend (`backend/.env`)
+### Auth
+| Method | Route | Auth | Description |
+|---|---|---|---|
+| `POST` | `/api/v1/auth/register` | Public | Register new user |
+| `POST` | `/api/v1/auth/login` | Public | Login, get tokens |
+| `POST` | `/api/v1/auth/refresh` | Refresh Token | Rotate token pair |
+| `POST` | `/api/v1/auth/logout` | JWT | Invalidate refresh token |
+| `GET` | `/api/v1/auth/verify-email?token=` | Public | Verify email |
+| `POST` | `/api/v1/auth/resend-verification` | Public | Resend verify email |
 
-| Variable             | Description                      | Example                          |
-| -------------------- | -------------------------------- | -------------------------------- |
-| `DATABASE_URL`       | MongoDB connection string        | `mongodb+srv://...`              |
-| `JWT_ACCESS_SECRET`  | Access token signing secret      | (min 32 chars)                   |
-| `JWT_REFRESH_SECRET` | Refresh token signing secret     | (min 32 chars)                   |
-| `MAIL_HOST`          | SMTP host                        | `smtp.gmail.com`                 |
-| `MAIL_PORT`          | SMTP port                        | `587`                            |
-| `MAIL_USER`          | SMTP username / email            | `you@gmail.com`                  |
-| `MAIL_PASS`          | SMTP password / app password     | (Gmail App Password)             |
-| `MAIL_FROM`          | Default sender address           | `you@gmail.com`                  |
-| `CLIENT_URL`         | Frontend origin (CORS + emails)  | `http://localhost:3000`          |
-| `PORT`               | Server listen port               | `4000`                           |
-
-### Frontend (`frontend/.env.local`)
-
-| Variable              | Description          | Default                             |
-| --------------------- | -------------------- | ----------------------------------- |
-| `NEXT_PUBLIC_API_URL` | Backend API base URL | `http://localhost:4000/api/v1`      |
+### Users
+| Method | Route | Role | Description |
+|---|---|---|---|
+| `GET` | `/api/v1/users/me` | Any | Current user profile |
+| `GET` | `/api/v1/users` | ADMIN | List all users |
+| `GET` | `/api/v1/users/dashboard` | MODERATOR+ | Mod dashboard |
 
 ---
 
-## License
+## 📜 Available Scripts
 
-MIT
+Run all commands from the **root** of the project:
+
+| Script | Description |
+|---|---|
+| `npm install` | Install all deps for both workspaces |
+| `npm run dev:backend` | Start backend in watch mode (port 4000) |
+| `npm run dev:frontend` | Start frontend with Turbopack (port 3000) |
+| `npm run build:backend` | Build backend |
+| `npm run build:frontend` | Build frontend |
+| `npm run start:backend` | Start backend in production |
+| `npm run start:frontend` | Start frontend in production |
+| `npm run prisma:generate` | Generate Prisma client |
+| `npm run prisma:push` | Push schema to MongoDB |
+
+---
+
+## 👥 Roles
+
+```
+ADMIN       →  Full access to all routes
+MODERATOR   →  /dashboard + /users/dashboard
+USER        →  /dashboard + /users/me only
+```
+
+---
+
+## 🔒 Security Highlights
+
+- Passwords hashed with **bcrypt** — never stored plain
+- Refresh tokens **hashed in DB** — raw token never persisted
+- **Constant-time comparison** — prevents timing-based user enumeration
+- **Token reuse detection** — invalidates all sessions on suspicious activity
+- **Generic error messages** — never reveals if an email is registered
+- Rate limiting + Helmet headers on all endpoints
+
+---
+
+## 🗺️ Roadmap
+
+- [x] JWT Auth + Token Rotation
+- [x] Role-Based Access Control
+- [x] Email Verification
+- [x] Next.js 15 App Router Frontend
+- [x] npm Workspaces Monorepo
+- [ ] Password Reset Flow
+- [ ] Google OAuth
+- [ ] Two-Factor Authentication (2FA)
+- [ ] Docker Setup
+
+---
+
+## 🤝 Contributing
+
+1. Fork the repo
+2. Create a branch: `git checkout -b feature/your-feature`
+3. Commit: `git commit -m "feat: your feature"`
+4. Push & open a Pull Request
+
+---
+
+## 📄 License
+
+MIT — free to use, modify, and distribute.
+
+---
+
+<div align="center">
+  <sub>Built with ❤️ · NestJS · Next.js 15 · MongoDB · TypeScript</sub>
+</div>
